@@ -1,0 +1,56 @@
+{
+  "alunos": {
+    "matricula1": {
+      "nome": "Fulano",
+      "cursos": [0],
+      "disciplinas": [0, 1]
+    },
+    "matricula2": {
+      "nome": "Sicrano",
+      "cursos": [1],
+      "disciplinas": [2]
+    }
+  },
+  "cursos": {
+    "0": {
+      "nome": "Sistemas para Internet"
+    },
+    "1": {
+      "nome": "Engenharia de Software"
+    }
+  },
+  "disciplinas": {
+    "0": {
+      "nome": "Probabilidade",
+      "curso_id": 0
+    },
+    "1": {
+      "nome": "Linguagem de Programação",
+      "curso_id": 0
+    },
+    "2": {
+      "nome": "Álgebra Linear",
+      "curso_id": 1
+    }
+  },
+  "notas": {
+    "matricula1": {
+      "2024-1": {
+        "0": {
+          "nota1": 80,
+          "nota2": 90,
+          "nota_final": 0,
+          "media": 85,
+          "situacao": "aprovado"
+        },
+        "1": {
+          "nota1": 90,
+          "nota2": 90,
+          "nota_final": 0,
+          "media": 90,
+          "situacao": "aprovado"
+        }
+      }
+    }
+  }
+}
