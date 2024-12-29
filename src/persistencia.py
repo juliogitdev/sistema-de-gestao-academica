@@ -49,6 +49,7 @@ def obter_matriculas():
 
 #salva os dados json
 def salvar_dados(dados):
+
     try:
         with open(caminho_arquivo_json, 'w', encoding='utf-8') as arquivo:
             json.dump(dados, arquivo, ensure_ascii=False, indent=4)
@@ -63,6 +64,7 @@ def adicionar_matricula(nome, matricula):
 
     if not matricula in dados['alunos']:
         dados['alunos'][matricula] = {"nome": nome, "cursos":[], "disciplinas": []}
+        dados['notas'][matricula] = {}
         salvar_dados(dados)
     else:
         print(f"A matrícula {matricula} já existe.")
@@ -122,7 +124,7 @@ def remover_disciplina(id_disciplina):
     print(f"Disciplina com ID {id_disciplina} removida com sucesso.")
 
 
-def manipular_notas(matricula, semestre, id_disciplina, nota1, nota2, editar=False):
+def manipular_notas(matricula, semestre, id_disciplina, nota1, nota2):
     dados = carregar_dados()
 
     # Calcular a média ponderada
@@ -130,43 +132,32 @@ def manipular_notas(matricula, semestre, id_disciplina, nota1, nota2, editar=Fal
 
     # Estrutura para as notas
     nota_info = {
-        "id_disciplina": id_disciplina,
         "nota1": nota1,
         "nota2": nota2,
         "media": media,
     }
 
     # Verificar se a matrícula existe no dicionário de notas
-    if matricula not in dados['notas']:
+    if not matricula in dados['notas']:
         print(f"A matrícula {matricula} não existe.")
         return
 
-    # Verificar se o semestre existe para a matrícula
-    if semestre not in dados['notas'][matricula]:
-        print(f"O semestre {semestre} não foi encontrado para a matrícula {matricula}.")
+    if not id_disciplina in dados['alunos'][matricula]['disciplinas']:
+        print(f"Disciplina não associada a aluno")
         return
+    
+    if not semestre in dados['notas'][matricula]:
+        dados['notas'][matricula][semestre] = {}
+        print("SEM SEMESTRE")
+    
+    dados['notas'][matricula][semestre][id_disciplina] = nota_info
 
-    # Se editar, procuramos pela disciplina e substituímos as notas
-    if editar:
-        disciplina_encontrada = False
-        for idx, nota in enumerate(dados['notas'][matricula][semestre]):
-            if nota['id_disciplina'] == id_disciplina:
-                # Substituir as notas e atualizar a média
-                dados['notas'][matricula][semestre][idx] = nota_info
-                disciplina_encontrada = True
-                salvar_dados(dados)
-                print(f"Notas para a disciplina {id_disciplina} do aluno {matricula} no semestre {semestre} atualizadas com sucesso.")
-                break
+    salvar_dados(dados)
 
-        if not disciplina_encontrada:
-            print(f"Disciplina {id_disciplina} não encontrada para o aluno {matricula} no semestre {semestre}.")
-        return
-
-    # Se não for edição, adicionamos as notas para a disciplina
-    dados['notas'][matricula][semestre].append(nota_info)
+    
     
     # Salvar os dados no arquivo JSON
-    salvar_dados(dados)
+    #salvar_dados(dados)
     
     print(f"Notas para a disciplina {id_disciplina} adicionadas com sucesso ao aluno {matricula} no semestre {semestre}.")
 
@@ -238,6 +229,12 @@ def adicionar_disciplina_a_aluno(matricula, id_disciplina):
         print("Já está associado a está disciplina")
         return
     
+    for disciplina in dados['disciplinas']:
+        if not disciplina['id_curso'] in dados['alunos'][matricula]['cursos']:
+            print("Essa disciplina não está disponivel para seus cursos")
+            return
+
+    
     for dado in dados['disciplinas']:
 
     #verifica se o id da disciplina é válido
@@ -259,12 +256,12 @@ def remover_disciplina_de_aluno(matricula, id_disciplina):
     aluno = dados['alunos'][matricula]
 
     # Verificar se a disciplina está associada ao aluno
-    if id_disciplina not in [d['id'] for d in aluno['disciplinas']]:
+    if id_disciplina not in aluno['disciplinas']:
         print(f"A disciplina com ID {id_disciplina} não está associada ao aluno {matricula}.")
         return
 
     # Remover a disciplina do aluno
-    aluno['disciplinas'] = [d for d in aluno['disciplinas'] if d['id'] != id_disciplina]
+    aluno['disciplinas'].remove(id_disciplina)
 
     # Remover as notas associadas à disciplina do aluno
     if matricula in dados['notas']:
@@ -275,4 +272,32 @@ def remover_disciplina_de_aluno(matricula, id_disciplina):
     salvar_dados(dados)
 
     print(f"A disciplina com ID {id_disciplina} foi removida do aluno {matricula} e suas notas excluídas.")
+
+
+
+def calcular_media(matricula, semestre):
+    dados = carregar_dados()
+    
+    if matricula not in dados['notas']:
+        print(f"Aluno {matricula} não encontrado.")
+        return None
+    
+    notas_aluno = dados['notas'][matricula].get(semestre, [])
+    
+    if not notas_aluno:
+        print(f"Semestre {semestre} não encontrado para o aluno {matricula}.")
+        return None
+    
+    # Calcular a média ponderada
+    soma_notas = 0
+    total_notas = 0
+    
+    for nota in notas_aluno:
+        soma_notas += (nota['nota1'] + nota['nota2']) / 2
+        total_notas += 1
+
+    if total_notas == 0:
+        return 0
+
+    return soma_notas / total_notas
 
