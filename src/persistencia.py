@@ -276,3 +276,30 @@ def remover_disciplina_de_aluno(matricula, id_disciplina):
 
     print(f"A disciplina com ID {id_disciplina} foi removida do aluno {matricula} e suas notas excluídas.")
 
+
+
+def calcular_media(matricula, semestre):
+    dados = carregar_dados()
+    
+    if matricula not in dados['notas']:
+        print(f"Aluno {matricula} não encontrado.")
+        return None
+    
+    notas_aluno = dados['notas'][matricula].get(semestre, [])
+    
+    if not notas_aluno:
+        print(f"Semestre {semestre} não encontrado para o aluno {matricula}.")
+        return None
+    
+    # Calcular a média ponderada
+    soma_notas = 0
+    total_notas = 0
+    
+    for nota in notas_aluno:
+        soma_notas += (nota['nota1'] + nota['nota2']) / 2
+        total_notas += 1
+
+    if total_notas == 0:
+        return 0
+
+    return soma_notas / total_notas
