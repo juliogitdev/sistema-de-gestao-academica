@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from src import interface, persistencia
 from tkinter import messagebox
+from src.views import exibir_alunos
 import re
 
 def verificar_entradas(matricula, nome, root):
@@ -17,17 +18,23 @@ def verificar_entradas(matricula, nome, root):
     
     # Verifica se o nome é uma string não vazia e só contém letras e espaços
     if not nome or not nome.strip():
-        messagebox.showinfo('Alerta', 'O nome não pode ser vazio!')
+        messagebox.showinfo('Alerta', 'Nome inválido')
         return
+    
     if not re.match("^[A-Za-z\s]*$", nome):
         messagebox.showinfo('Alerta', 'O nome deve conter apenas letras e espaços!')
         return
     
     cadastro = persistencia.adicionar_matricula(nome, matricula)
+
     if cadastro:
         messagebox.showinfo('Parabéns', 'Dados cadastrados')
+        interface.mudar_tela(root, exibir_alunos.tela_exibir_alunos)
     else:
         messagebox.showinfo('Alerta', 'Matrícula já cadastrada')
+        return
+    
+
     
 
 
@@ -38,6 +45,8 @@ def exibir_tela_cadastrar_aluno(root):
 
     root.configure(bg_color=interface.COR_BACKGROUND)
     root.update()
+
+    backup_frame_root = root
 
     # Layout principal
     root.grid_columnconfigure([0, 1], weight=1)
@@ -97,3 +106,4 @@ def exibir_tela_cadastrar_aluno(root):
 
     botao_criar = ctk.CTkButton(frame_direito, width=200, height=50, corner_radius=15, fg_color=interface.COR_VERDE,
                   font=('League Spartan', 25, 'bold'), anchor='center', text='Criar', cursor='hand2', command= lambda: verificar_entradas(input_matricula.get(), input_nome.get(), root)).grid(column=1, row=3, sticky='n')
+    

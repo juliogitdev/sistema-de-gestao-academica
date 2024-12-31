@@ -1,5 +1,6 @@
 import customtkinter as ctk
 from src import interface, persistencia
+from src.views import cadrastar_aluno, exibir_alunos, exibir_dashboard
 
 
 def main():
@@ -14,9 +15,9 @@ def main():
     frame_principal.grid(row=0, column=0, sticky='snew')
     
     if len(persistencia.carregar_dados()['alunos']) > 0:
-        interface.tela_exibir_alunos(frame_principal)
+        exibir_alunos.tela_exibir_alunos(frame_principal)
     else:
-        interface.tela_cadastrar_aluno(frame_principal)
+        cadrastar_aluno.exibir_tela_cadastrar_aluno(frame_principal)
         
 
     root.mainloop()
