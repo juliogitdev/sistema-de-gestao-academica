@@ -1,25 +1,25 @@
-from src import api_integration
-from src import interface
-from src import persistencia
+import customtkinter as ctk
+from src import interface, persistencia
+
 
 def main():
-    matriculas = persistencia.obter_matriculas()
-    dados = persistencia.carregar_dados()
+    root = ctk.CTk()
+    root.title("Gerenciador")
+    root.geometry("800x600")
 
-    #Verificar se existe algum perfil
-    if matriculas:
-        print("Perfis disponíveis:")
-        #pecorrendo por todos perfis cadastrados e imprimindo o nome
-        for matricula in matriculas:
-            aluno = dados['alunos'][matricula]['nome']
-            print(aluno)
-        
-        #chamar a interface de selecionar perfil
+    root.columnconfigure(0, weight=1)
+    root.rowconfigure(0, weight=1)
+
+    frame_principal = ctk.CTkFrame(root, fg_color='#e5e3e3')
+    frame_principal.grid(row=0, column=0, sticky='snew')
     
-    #Caso não exista perfil criado
+    if len(persistencia.carregar_dados()['alunos']) > 0:
+        interface.tela_exibir_alunos(frame_principal)
     else:
-        print("Nenhum perfil criado.")
-        #chama a interface de criar perfil
+        interface.tela_cadastrar_aluno(frame_principal)
+        
+
+    root.mainloop()
 
 if __name__ == "__main__":
     main()
