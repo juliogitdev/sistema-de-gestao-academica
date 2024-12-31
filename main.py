@@ -15,9 +15,9 @@ def main():
     
     if len(persistencia.carregar_dados()['alunos']) > 0:
         interface.tela_exibir_alunos(frame_principal)
-        
     else:
         interface.tela_cadastrar_aluno(frame_principal)
+        
 
     root.mainloop()
 
