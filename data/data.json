@@ -1,5 +1,26 @@
 {
-    "alunos": {},
+    "alunos": {
+        "123456": {
+            "nome": "Julio",
+            "cursos": [],
+            "disciplinas": []
+        },
+        "123": {
+            "nome": "Cesar",
+            "cursos": [],
+            "disciplinas": []
+        },
+        "456": {
+            "nome": "Vieira",
+            "cursos": [],
+            "disciplinas": []
+        },
+        "789": {
+            "nome": "Barros",
+            "cursos": [],
+            "disciplinas": []
+        }
+    },
     "cursos": [
         {
             "id": 0,

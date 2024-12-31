@@ -303,3 +303,4 @@ def calcular_media(matricula, semestre):
         return 0
 
     return soma_notas / total_notas
+
