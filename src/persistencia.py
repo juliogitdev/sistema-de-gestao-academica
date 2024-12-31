@@ -66,8 +66,10 @@ def adicionar_matricula(nome, matricula):
         dados['alunos'][matricula] = {"nome": nome, "cursos":[], "disciplinas": []}
         dados['notas'][matricula] = {}
         salvar_dados(dados)
+        return True
     else:
         print(f"A matrícula {matricula} já existe.")
+        return False
 
 #Excluir perfil
 def remover_matricula(matricula):

@@ -1,7 +1,13 @@
 from src.views import exibir_alunos, cadrastar_aluno
 
-def tela_exibir_alunos(root):
-    exibir_alunos.tela_exibir_alunos(root)
+COR_BACKGROUND = '#e5e3e3'
+COR_VERDE = '#086a3d'
+COR_CINZA = '#a6a6a6'
 
-def tela_cadastrar_aluno(root):
-    cadrastar_aluno.exibir_tela_cadastrar_aluno(root)
+def mudar_tela(root, tela_nova):
+    # Limpa todos os widgets da tela atual
+    for widget in root.winfo_children():
+        widget.grid_forget()
+    
+    # Exibe a nova tela
+    tela_nova(root)
