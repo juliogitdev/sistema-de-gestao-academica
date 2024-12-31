@@ -1,5 +1,10 @@
 {
     "alunos": {
+        "123456789123": {
+            "nome": "Julio",
+            "cursos": [],
+            "disciplinas": []
+        }
     },
     "cursos": [
         {
