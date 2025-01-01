@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from src import interface, persistencia
-from src.views import cadrastar_aluno, exibir_alunos, exibir_dashboard
+from src.views import cadrastar_aluno, exibir_alunos
+from src.views.menu import cadastrar_curso, cadastrar_disciplina, cadastrar_nota, desempenho, exibir_dashboard, historico
 
 
 def main():
