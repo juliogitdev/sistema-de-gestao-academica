@@ -1,7 +1,7 @@
 import customtkinter as ctk
 from src import persistencia
 from PIL import Image
-from src.views import exibir_dashboard
+from src.views.menu import exibir_dashboard
 import os
 
 PASTA_IMGS = os.path.join(os.path.dirname(__file__), '..', '..', 'assets', 'imgs')
@@ -18,12 +18,13 @@ def carregar_image_aluno():
     return ctk.CTkImage(imagem_cortada, size=(180, 180))
 
 
+
 def tela_exibir_alunos(root):
     # Limpa a tela
     for widget in root.winfo_children():
         widget.pack_forget()
 
-    # Dimensões da tela
+
     root.configure(bg_color='#e5e3e3')
     root.update()
 
@@ -72,7 +73,7 @@ def tela_exibir_alunos(root):
         label_foto = ctk.CTkLabel(frame_usuarios, image=foto_padrao, text='')
         label_foto.configure(cursor="hand2")
 
-        label_foto.bind("<Button-1>", lambda event, aluno=aluno: exibir_dashboard.tela_exibir_dashboard(aluno))
+        label_foto.bind("<Button-1>", lambda event, aluno=aluno: exibir_dashboard.tela_exibir_dashboard(root, aluno))
 
         label_nome = ctk.CTkLabel(
             frame_usuarios,

@@ -1,0 +1,3 @@
+COR_BACKGROUND = '#e5e3e3'
+COR_VERDE = '#086a3d'
+COR_CINZA = '#a6a6a6'
