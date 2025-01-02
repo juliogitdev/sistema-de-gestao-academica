@@ -1,48 +1,20 @@
 import customtkinter as ctk
 from src import persistencia
-from PIL import Image,ImageDraw
 from config import *
 from src.views.menu import exibir_dashboard
+from src.views import tools
 import os
 
 PASTA_IMGS = os.path.join(os.path.dirname(__file__), '..', '..', 'assets', 'imgs')
 
 
-# Função para recortar a imagem em formato circular
-def criar_imagem_circular(caminho_imagem, tamanho=(120, 120)):
-    # Abrir a imagem
-    imagem = Image.open(caminho_imagem)
 
-    # Calcular o menor lado para criar um quadrado central
-    lado_menor = min(imagem.size)
-    esquerda = (imagem.width - lado_menor) // 2
-    topo = (imagem.height - lado_menor) // 2
-    direita = esquerda + lado_menor
-    inferior = topo + lado_menor
-
-    # Cortar a imagem para um quadrado central
-    imagem = imagem.crop((esquerda, topo, direita, inferior))
-
-    # Redimensionar para o tamanho desejado
-    imagem = imagem.resize(tamanho, Image.LANCZOS)
-
-    # Criar a máscara circular
-    mascara = Image.new("L", tamanho, 0)
-    draw = ImageDraw.Draw(mascara)
-    draw.ellipse((0, 0, tamanho[0], tamanho[1]), fill=255)
-
-    # Aplicar a máscara na imagem
-    imagem_circular = Image.new("RGBA", tamanho, (0, 0, 0, 0))
-    imagem_circular.paste(imagem, (0, 0), mask=mascara)
-
-    # Converter para CTkImage
-    return ctk.CTkImage(light_image=imagem_circular, size=tamanho)
 
 
 def tela_exibir_alunos(root):
     
     caminho_foto = os.path.join(PASTA_IMGS, 'login.jpg')
-    foto_padrao = criar_imagem_circular(caminho_foto)
+    foto_padrao = tools.criar_imagem_circular(caminho_foto)
 
     frame_principal = ctk.CTkFrame(root, fg_color=COR_BACKGROUND)
     frame_principal.place(relwidth=1, relheight=1)
@@ -74,7 +46,7 @@ def tela_exibir_alunos(root):
         label_foto = ctk.CTkLabel(frame_usuarios, image=foto_padrao, text='')
         label_foto.configure(cursor="hand2")
 
-        label_foto.bind("<Button-1>", lambda event, aluno=aluno: exibir_dashboard.tela_exibir_dashboard(root, aluno, criar_imagem_circular(caminho_foto, (100, 100))))
+        label_foto.bind("<Button-1>", lambda event, aluno=aluno: exibir_dashboard.tela_exibir_dashboard(root, aluno, tools.criar_imagem_circular(caminho_foto, (80, 80))))
 
         label_nome = ctk.CTkLabel(
             frame_usuarios,
