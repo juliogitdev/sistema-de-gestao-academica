@@ -5,7 +5,7 @@ from tkinter import messagebox
 from src.views import exibir_alunos
 import re
 
-def verificar_entradas(matricula, nome, root):
+def verificar_entradas(matricula, nome):
 
     # Verifica se a matrícula é numérica
     if not matricula.isdigit():
@@ -90,7 +90,7 @@ def exibir_tela_cadastrar_aluno(root):
         anchor='center', 
         text='Criar', 
         cursor='hand2', 
-        command= lambda: verificar_entradas(input_matricula.get(), input_nome.get(), root))
+        command= lambda: verificar_entradas(input_matricula.get(), input_nome.get()))
     
     botao_criar.pack(pady=20)
 

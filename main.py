@@ -10,7 +10,7 @@ def main():
     root.geometry("800x600")
 
     if len(persistencia.carregar_dados()['alunos']) > 0:
-        exibir_alunos.tela_exibir_alunos()
+        exibir_alunos.tela_exibir_alunos(root)
     else:
         cadrastar_aluno.exibir_tela_cadastrar_aluno(root)
         

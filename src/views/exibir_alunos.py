@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from src import persistencia
-from PIL import Image, ImageTk, ImageDraw
+from PIL import Image,ImageDraw
+from config import *
 from src.views.menu import exibir_dashboard
 import os
 
@@ -8,7 +9,7 @@ PASTA_IMGS = os.path.join(os.path.dirname(__file__), '..', '..', 'assets', 'imgs
 
 
 # Função para recortar a imagem em formato circular
-def criar_imagem_circular(caminho_imagem, tamanho=(180, 180)):
+def criar_imagem_circular(caminho_imagem, tamanho=(120, 120)):
     # Abrir a imagem
     imagem = Image.open(caminho_imagem)
 
@@ -38,59 +39,23 @@ def criar_imagem_circular(caminho_imagem, tamanho=(180, 180)):
     return ctk.CTkImage(light_image=imagem_circular, size=tamanho)
 
 
-"""
-def carregar_image_aluno():
-    caminho_foto = os.path.join(PASTA_IMGS, 'login.jpg')
-    imagem = Image.open(caminho_foto)
-
-    size = min(imagem.size)
-    left = (imagem.width - size) // 2
-    top = (imagem.height - size) // 2
-    imagem_cortada = imagem.crop((left, top, left + size, top + size))
-"""
-
-
-
 def tela_exibir_alunos(root):
-    # Limpa a tela
-    for widget in root.winfo_children():
-        widget.pack_forget()
-
-
-    root.configure(bg_color='#e5e3e3')
-    root.update()
-
-    width = root.winfo_width()
-    height = root.winfo_height()
-
-    # Lista com os dados dos alunos
-    alunos = list(persistencia.carregar_dados().get('alunos', []).values())
-
-    # Número máximo de colunas
-    max_colunas = len(alunos)
-
+    
     caminho_foto = os.path.join(PASTA_IMGS, 'login.jpg')
     foto_padrao = criar_imagem_circular(caminho_foto)
 
-    # Configuração do grid para ajustar o layout
-    # Linhas do root
-    root.grid_rowconfigure(0, weight=1)
-    root.grid_rowconfigure(1, weight=2)
-    root.grid_rowconfigure(2, weight=1)
+    frame_principal = ctk.CTkFrame(root, fg_color=COR_BACKGROUND)
+    frame_principal.place(relwidth=1, relheight=1)
 
-    # Colunas do root
-    root.grid_columnconfigure(0, weight=1)
-    root.grid_columnconfigure(1, weight=4)
-    root.grid_columnconfigure(2, weight=1)
 
     # Label escrito "Alunos"
-    label_alunos = ctk.CTkLabel(root, text='Alunos', font=('League Spartan', 70, 'bold'), text_color='#086a3d')
-    label_alunos.grid(row=0, column=1, sticky='n', pady=50)
+    label_alunos = ctk.CTkLabel(frame_principal, text='Alunos', font=('League Spartan', 70, 'bold'), text_color=COR_VERDE)
+    label_alunos.pack(pady=30)
 
     # Frame onde vai ficar os alunos
-    frame_usuarios = ctk.CTkFrame(root, fg_color='#e5e3e3')
-    frame_usuarios.configure(bg_color='#e5e3e3')
-    frame_usuarios.grid(row=1, column=1, sticky='nsew')
+    frame_usuarios = ctk.CTkFrame(root, fg_color=COR_BACKGROUND)
+    frame_usuarios.configure(bg_color=COR_BACKGROUND)
+    frame_usuarios.place(rely=0.5, relx=0.5, anchor='center')
 
     # Configuração do layout do frame dos alunos
     # Linhas do frame de usuários
@@ -98,6 +63,9 @@ def tela_exibir_alunos(root):
     frame_usuarios.grid_rowconfigure(1, weight=1)
     frame_usuarios.grid_rowconfigure(2, weight=1)
     frame_usuarios.grid_rowconfigure(3, weight=1)
+
+    dados = persistencia.carregar_dados()
+    alunos = dados['alunos'].values()
 
     # Colunas do frame de usuários
     for i, aluno in enumerate(alunos):
