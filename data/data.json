@@ -1,11 +1,5 @@
 {
-    "alunos": {
-        "123123123123": {
-            "nome": "jklulio",
-            "cursos": [],
-            "disciplinas": []
-        }
-    },
+    "alunos": {},
     "cursos": [
         {
             "id": 0,

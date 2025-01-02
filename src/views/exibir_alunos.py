@@ -106,7 +106,7 @@ def tela_exibir_alunos(root):
         label_foto = ctk.CTkLabel(frame_usuarios, image=foto_padrao, text='')
         label_foto.configure(cursor="hand2")
 
-        label_foto.bind("<Button-1>", lambda event, aluno=aluno: exibir_dashboard.tela_exibir_dashboard(root, aluno, foto_padrao))
+        label_foto.bind("<Button-1>", lambda event, aluno=aluno: exibir_dashboard.tela_exibir_dashboard(root, aluno, criar_imagem_circular(caminho_foto, (100, 100))))
 
         label_nome = ctk.CTkLabel(
             frame_usuarios,
